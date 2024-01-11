@@ -18,11 +18,14 @@ onValue(movieInDb, function (snapshot) {
     document.querySelector('#shopping-list').innerHTML ="";
     console.log("snapshot");
     // console.log(snapshot.val()); // Use snapshot.val() to get the data
-    let movies = Object.values(snapshot.val());
+    let movies = Object.entries(snapshot.val());
     movies.forEach((element)=>{
-        addItemToUl(element);
+        element.forEach((e)=>{
+            addItemToUl(element[1],element[0]);
+        })
+        
     })
-    console.log("snapshot");
+    
 });
 
 
@@ -31,14 +34,16 @@ let input = document.querySelector("#input-field");
 button.addEventListener("click",()=>{
     let inputContent = input.value;
     push(movieInDb, inputContent);
-    
 });
 
 
 // create a function to add an li to ul with id shopping-list
-function addItemToUl(content){
+function addItemToUl(content,key){
     let element = document.createElement("li");
     element.textContent=content;
     let ul = document.querySelector('#shopping-list');
     ul.appendChild(element);
+    element.addEventListener("click",(e)=>{
+        console.log(key)
+    })
 }

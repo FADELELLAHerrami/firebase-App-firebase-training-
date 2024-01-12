@@ -15,12 +15,15 @@ const movieInDb = ref(database,"movie");
 
 onValue(movieInDb, function (snapshot) {
     document.querySelector('#shopping-list').innerHTML ="";
-    // console.log(snapshot.val()); // Use snapshot.val() to get the data
-    let movies = Object.entries(snapshot.val());
-    const moviesEntries =  movies.map((element)=> element)
-    moviesEntries.forEach((e)=>{
-        addItemToUl(e[1],e[0]);
-    })
+    if( snapshot.exists()){
+        let movies = Object.entries(snapshot.val());
+        const moviesEntries =  movies.map((element)=> element)
+        moviesEntries.forEach((e)=>{
+            if(e[1].length !== 0 ) {console.log(e[1].length);addItemToUl(e[1],e[0]);};
+        })
+    }else{
+        document.querySelector('#shopping-list').innerHTML ="<div style = \"margin: auto;\"><p style=\"background-color: #ffff00;\">no item yet</p></div>"
+    }
     
 });
 
@@ -37,7 +40,7 @@ button.addEventListener("click",()=>{
 // create a function to add an li to ul with id shopping-list
 function addItemToUl(content,key){
     let element = document.createElement("li");
-    element.textContent=content;
+    element.textContent=content;     
     let ul = document.querySelector('#shopping-list');
     ul.appendChild(element);
     // remove item
